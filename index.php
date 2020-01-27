@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
  * URL: http://rcox.greenriverdev.com/IT328/pets/index.php
  * Authors: Robert Cox, Olivia Ringhiser
@@ -31,12 +32,30 @@ $fff->route("GET /", function () {
 </html>";
 });
 
+$fff->route("GET /order", function () {
+    $view = new Template();
+    echo $view->render("views/form1.html");
+});
+
+$fff->route("POST /order2", function () {
+    $_SESSION["animal"] = $_POST["animal"];
+    $view = new Template();
+    echo $view->render("views/form2.html");
+});
+
+$fff->route("POST /results", function () {
+    $_SESSION["color"] = $_POST["color"];
+    $view = new Template();
+    echo $view->render("views/results.html");
+});
+
+
 $fff->route("GET /@item", function ($fff, $params) {
     $item = $params["item"];
     switch ($item) {
         case "chicken" :
-        echo "<h1>Cluck!</h1>";
-        break;
+            echo "<h1>Cluck!</h1>";
+            break;
         case "dog" :
             echo "<h1>Woof!</h1>";
             break;
@@ -49,11 +68,8 @@ $fff->route("GET /@item", function ($fff, $params) {
         case "sheep" :
             echo "<h1>Baa!</h1>";
             break;
-
         default : $fff->error404("animal not found");
     }
-
-
 });
 $fff->run();
 ?>
